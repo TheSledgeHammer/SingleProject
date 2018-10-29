@@ -1,97 +1,65 @@
 buildscript {
-    repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
+	repositories {
+		jcenter()
+		mavenCentral()
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+	}
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
+apply from: rootProject.file('git-maven.gradle')
+
+sourceCompatibility = 1.8
+targetCompatibility= 1.8
 
 repositories {
-    maven { // The repo from which to get waila
-        name "Mobius Repo"
-        url "https://tehnut.info/maven"
-        //url "http://mobiusstrip.eu/maven"
-    }
-    maven { // JEI
-        url "http://dvs1.progwml6.com/files/maven"
-    }
-    maven {
-        name 'OC Repo'
-        url "http://maven.cil.li/"
-    }
-    maven { // TOP
-        name 'tterrag maven'
-        url "https://maven.tterrag.com/"
-    }
-    maven { // McJtyLib
-        url "http://maven.k-4u.nl"
-    }
-    maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/repositories/snapshots/"
-    }
-    maven {
-        name = "CoFH Maven"
-        url = "http://maven.covers1624.net"
-    }
-    maven { // Charset
-        name = "Elytra Maven"
-        url = "https://repo.elytradev.com"
-    }
+	maven {
+		name = "Forestry"
+		url = "http://maven.ic2.player.to/"
+	}
+	maven {
+		name = "Modmuss50"
+		url = "http://maven.modmuss50.me/"
+	}
 }
 
 minecraft {
-    version = "${minecraft_version}-${forge_version}"
-    runDir = "run"
-    mappings = mcp_mappings
-    useDepAts = true
+	version = mcversion + "-" + forgeversion
+	runDir = "run"
+	mappings = mcp_mappings
 }
+
+group= 'com.thesledgehammer.retrobees'
+archivesBaseName = "RetroBees"
+//version = mcversion + '-' + version_major + '.' + version_minor + '.' + version_patch
 
 dependencies {
-    deobfCompile "mezz.jei:jei_${jei_version}"
-    deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
-    deobfCompile "mcjty.theoneprobe:TheOneProbe-${top_version}"
-    deobfCompile "cofh:RedstoneFlux:${redstoneflux_version}"
-
-    deobfCompile "com.github.mcjty:intwheel:${intwheel_version}"
-
-    compile project(':McJtyLib')
-    compile project(':RFTools')
-    compile project(':LostCities')
-    compile project(':RFToolsControl')
-    compile project(':RFToolsDimensions')
-    compile project(':RFToolsPower')
-    compile project(':NeedToBreathe')
-    compile project(':AquaMunda')
-    compile project(':DeepResonance')
-    compile project(':EFab')
-    compile project(':GearSwapper')
-    compile project(':ImmersiveCraft')
-    compile project(':MeeCreeps')
-    compile project(':Nice')
-    compile project(':NotEnoughWands')
-    compile project(':QuestUtils')
-    compile project(':Restrictions')
-    compile project(':RFLux')
-    compile project(':XNet')
-
-    compile "li.cil.oc:OpenComputers:${oc_version}"
+	deobfCompile("net.sengir.forestry:forestry_${forestry_mcversion}:${forestry_version}") {
+		transitive = false
+	}
+	deobfCompile("TechReborn:TechReborn-1.12.2:+:universal")
+	deobfCompile("RebornCore:RebornCore-1.12.2:+:universal") {
+		transitive = false
+	}
+	compile files('/lib/ProjectE-1.12-PE1.3.0.jar')
 }
 
-jar {
-    manifest {
-        attributes 'FMLAT': 'common_at.cfg'
-    }
+processResources {
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
+		// replace version and mcversion
+		expand 'version':project.version, 'mcversion':project.minecraft.version
+	}
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+	}
 }

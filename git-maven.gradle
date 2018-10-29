@@ -1,0 +1,48 @@
+apply plugin: 'maven'
+apply plugin: 'java'
+
+//GITHOST: Remote hosting location e.g. GitHub.com, GitLab.com, BitBucket.org etc
+//COMPANY: Company name or User
+//REPOSITORY_NAME: Git Repository name
+
+group = "com.thesledgehammer"
+version = mcversion + '-' + version_major + '.' + version_minor + '.' + version_patch
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: "file://Your/Maven/Repository/Location") //Maven Repository Location
+      pom {
+        groupId = project.group
+        version = project.version
+        artifactId = project.archivesBaseName
+        project {
+          name project.archivesBaseName
+          packaging 'jar'
+          description 'library'
+          scm {
+            connection 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+            developerConnection 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+          }
+          issueManagement {
+            system GITHOST
+          }
+          licenses {
+            license {
+              name LICENSE_NAME
+              //url LICENSE_URL
+              distribution 'repo'
+            }
+          }
+          developers {
+            developer {
+              id 'TheSledgehammer'
+              name 'TheSledgehammer'
+              roles { role 'developer' }
+            }
+          }
+        }
+      }
+    }
+  }
+}

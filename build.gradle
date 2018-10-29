@@ -4,10 +4,6 @@ apply from: 'configuration.gradle'
 subprojects {
     apply from: rootProject.file('common.gradle')
 }
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
 
 task settings {
     project.ext.singleproject = true
