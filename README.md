@@ -12,13 +12,23 @@ gradle.properties: Includes entries for signing .jar files.
 All settings are configured in the subprojects gradle.properties include:
 
 mcversion=
+
 forgeversion=
+
 mcp_mappings=
+
 version_major=
+
 version_minor=
+
 version_patch=
+
 GITHOST=
+
 REPOSITORY_NAME=
+
 COMPANY=
+
 LICENSE_NAME=
+
 LICENSE_URL=
