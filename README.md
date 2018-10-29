@@ -4,11 +4,11 @@ It contains slight changes to how it is setup from the Single Project for McJty'
 
 MC Folder contains RetroBees buld.gradle and gradle.properties as an example.
 
-#Modifications:
+# Modifications
 git-maven.gradle : The primary configuration for maven repositories and gradle.properties.
 gradle.properties: Includes entries for signing .jar files.
 
-#Setup for using git-maven.gradle:
+# Setup for using git-maven.gradle:
 All settings are configured in the subprojects gradle.properties include:
 
 mcversion=
