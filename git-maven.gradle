@@ -7,11 +7,15 @@ apply plugin: 'java'
 
 group = "com.thesledgehammer"
 version = mcversion + '-' + version_major + '.' + version_minor + '.' + version_patch
+//version = version_major + '.' + version_minor + '.' + version_patch
 
 uploadArchives {
   repositories {
     mavenDeployer {
-      repository(url: "file://Your/Maven/Repository/Location") //Maven Repository Location
+      //repository(url: "file://Z://maven-repository/") //Maven Repository Location
+      repository(url: "https://helixteamhub.cloud/cassowarycloud/projects/mc/repositories/maven/Maven") {
+        authentication(userName: project.HELIXUSER, password: project.HELIXPWD)
+      }
       pom {
         groupId = project.group
         version = project.version
@@ -19,18 +23,18 @@ uploadArchives {
         project {
           name project.archivesBaseName
           packaging 'jar'
-          description 'library'
+          description DESCRIPTION
           scm {
             connection 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
             developerConnection 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
           }
           issueManagement {
-            system GITHOST
+            system 'https://' + GITHOST + '/' + COMPANY + '/' + REPOSITORY_NAME + '/issues'
           }
           licenses {
             license {
               name LICENSE_NAME
-              //url LICENSE_URL
+                url LICENSE_URL
               distribution 'repo'
             }
           }
