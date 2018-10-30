@@ -19,18 +19,18 @@ uploadArchives {
         project {
           name project.archivesBaseName
           packaging 'jar'
-          description 'library'
+          description DESCRIPTION
           scm {
             connection 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
             developerConnection 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
           }
           issueManagement {
-            system GITHOST
+            system 'https://' + GITHOST + '/' + COMPANY + '/' + REPOSITORY_NAME + '/issues'
           }
           licenses {
             license {
               name LICENSE_NAME
-              //url LICENSE_URL
+                url LICENSE_URL
               distribution 'repo'
             }
           }
