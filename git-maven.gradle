@@ -8,6 +8,29 @@ apply plugin: 'java'
 group = "com.thesledgehammer"
 version = mcversion + '-' + version_major + '.' + version_minor + '.' + version_patch
 
+task deobfJar(type: Jar) {
+  from sourceSets.main.output
+  classifier = 'dev'
+}
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+  onlyIf{
+    keyStore = project.keyStore // This needs to be a path to the keystore file
+    alias = project.keyStoreAlias
+    storePass = project.keyStorePass
+    keyPass = project.keyStoreKeyPass
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+  }
+}
+
+build.dependsOn signJar
+
+artifacts {
+    archives sourceJar
+    archives deobfJar
+}
+
 uploadArchives {
   repositories {
     mavenDeployer {
