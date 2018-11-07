@@ -14,6 +14,11 @@ task deobfJar(type: Jar) {
   classifier = 'dev'
 }
 
+artifacts {
+    archives sourceJar
+    archives deobfJar
+}
+
 task signJar(type: SignJar, dependsOn: reobfJar) {
   onlyIf{
     keyStore = project.keyStore // This needs to be a path to the keystore file
@@ -27,19 +32,14 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
 
 build.dependsOn signJar
 
-artifacts {
-    archives sourceJar
-    archives deobfJar
-}
-
 uploadArchives {
   repositories {
     mavenDeployer {
-      repository(url: "file://Your/Maven/Repository/Location") //Maven Repository Location
+      repository(url: "file://Your/Maven/Repository/Location")
       pom {
         groupId = project.group
-        version = project.version
-        artifactId = project.archivesBaseName
+        version = project.version_major + '.' + project.version_minor + '.' + project.version_patch
+        artifactId = project.archivesBaseName + '_' + project.mcversion
         project {
           name project.archivesBaseName
           packaging 'jar'
@@ -50,6 +50,9 @@ uploadArchives {
           }
           issueManagement {
             system 'https://' + GITHOST + '/' + COMPANY + '/' + REPOSITORY_NAME + '/issues'
+          }
+          distributionManagement {
+            downloadUrl 'file://Your/Maven/Repository/Location'
           }
           licenses {
             license {
