@@ -5,4 +5,4 @@ import javax.tools.ToolProvider
 // #######################
 
 //Make sure JAVA_HOME is set as an environment variable
-ext.javaToolsJar = ((URLClassLoader) ToolProvider.getSystemToolClassLoader()).getURLs()
+//ext.javaToolsJar = ((URLClassLoader) ToolProvider.getSystemToolClassLoader()).getURLs()
