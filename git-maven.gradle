@@ -29,7 +29,7 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
 build.dependsOn signJar
 
 publishing {
-	publications {
+  publications {
     maven(MavenPublication) {
       groupId = group
       version = semVersion
@@ -38,7 +38,7 @@ publishing {
       from components.java
 
       artifact sourceJar {
-				classifier "sources"
+        classifier "sources"
       }
     }
   }
