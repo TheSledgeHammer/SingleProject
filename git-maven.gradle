@@ -1,13 +1,13 @@
 apply plugin: 'maven'
-apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 //GITHOST: Remote hosting location e.g. GitHub.com, GitLab.com, BitBucket.org etc
 //COMPANY: Company name or User
 //REPOSITORY_NAME: Git Repository name
 
-group = "com.thesledgehammer" + "." + project.archivesBaseName
-version = mcversion + '-' + version_major + '.' + version_minor + '.' + version_patch
+def group = "com.thesledgehammer" + "." + project.archivesBaseName
+def semVersion = version_major + '.' + version_minor + '.' + version_patch
+def artifactID = project.archivesBaseName + '_' + project.mcversion
 
 jar {
   classifier = 'universal'
@@ -28,6 +28,27 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
 }
 build.dependsOn signJar
 
+publishing {
+	publications {
+    maven(MavenPublication) {
+      groupId = group
+      version = semVersion
+      artifactId = artifactID
+
+      from components.java
+
+      artifact sourceJar {
+				classifier "sources"
+      }
+    }
+  }
+  repositories {
+    maven {
+      url "Your Maven Repository you location"
+    }
+  }
+}
+
 uploadArchives {
   repositories {
     mavenDeployer {
@@ -42,38 +63,35 @@ uploadArchives {
           repository(url: "file://Your/Local_Maven/Repository/Location")
         }
         pom {
-          groupId = project.group
-          version = project.version_major + '.' + project.version_minor + '.' + project.version_patch
-          artifactId = project.archivesBaseName + '_' + project.mcversion
+          groupId = group
+          version = semVersion
+          artifactId = artifactID
           project {
-            name project.archivesBaseName
-            packaging 'jar'
-            description DESCRIPTION
+            name = project.archivesBaseName
+            packaging = 'jar'
+            description = DESCRIPTION
             scm {
-              connection 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
-              developerConnection 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+              connection = 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+              developerConnection = 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
             }
             issueManagement {
-              system 'https://' + GITHOST + '/' + COMPANY + '/' + REPOSITORY_NAME + '/issues'
+              system = 'https://' + GITHOST + '/' + COMPANY + '/' + REPOSITORY_NAME + '/issues'
             }
             distributionManagement {
-              downloadUrl project.getProperty("local_maven")
-              downloadUrl project.getProperty("remote_maven")
+              downloadUrl = project.getProperty("local_maven")
+              downloadUrl = project.getProperty("remote_maven")
             }
             licenses {
               license {
-                name LICENSE_NAME
-                url LICENSE_URL
-                distribution 'repo'
+                name = LICENSE_NAME
+                url = LICENSE_URL
+                distribution = 'repo'
               }
             }
             developers {
               developer {
-                id 'TheSledgehammer'
-                name 'TheSledgehammer'
-                roles {
-                  role 'developer'
-                }
+                id = 'TheSledgehammer'
+                name = 'TheSledgehammer'
               }
             }
           }
