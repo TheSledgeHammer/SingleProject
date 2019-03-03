@@ -40,6 +40,25 @@ publishing {
       artifact sourceJar {
         classifier "sources"
       }
+      pom {
+        scm {
+          connection = 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+          developerConnection = 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+        }
+        licenses {
+          license {
+            name = LICENSE_NAME
+            url = LICENSE_URL
+            distribution = 'repo'
+          }
+        }
+        developers {
+          developer {
+            id = 'TheSledgehammer'
+            name = 'TheSledgehammer'
+          }
+        }
+      }
     }
   }
   repositories {
