@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#Clone Git Repositorys
+#Clone Git Repositories
 cd Projects
 git clone https://github.com/TheSledgeHammer/GroovyForge.git
 git clone https://github.com/TheSledgeHammer/GroovyMC.git
