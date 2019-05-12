@@ -4,10 +4,14 @@ It contains slight changes to how it is setup from the Single Project for McJty'
 
 MC Folder contains RetroBees build.gradle and gradle.properties as an example.
 
-# Setup Scripts:
-setupSingleProject.sh: Will clone all git repositories listed.
+# Automation Scripts:
+setupProjects.sh: Will clone all git repositories listed in this file into Folder Projects and Copy the Scripts folder to that Repo folder
 
-buildProjects.sh: Will compile and upload projects to bintray and other repositories.
+updateProjects.sh: Uses the copied Scripts folder to perform a git fetch on each repository
+
+buildProjects.sh: Will compile and upload projects to bintray and clean
+
+removeProjects.sh: Will Remove each of the Projects list in this file
 
 # Modifications & Additions
 git-maven.gradle : The primary configuration for maven repositories and gradle.properties.
