@@ -4,8 +4,9 @@ It contains slight changes to how it is setup from the Single Project for McJty'
 
 MC Folder contains RetroBees build.gradle and gradle.properties as an example.
 
-#Setup Scripts:
+# Setup Scripts:
 setupSingleProject.sh: Will clone all git repositories listed.
+
 buildProjects.sh: Will compile and upload projects to bintray and other repositories.
 
 # Modifications & Additions
