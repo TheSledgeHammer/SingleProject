@@ -9,7 +9,7 @@ setupProjects.sh: Will clone all git repositories listed in this file into Folde
 
 updateProjects.sh: Uses the copied Scripts folder to perform a git fetch on each repository
 
-buildProjects.sh: Will compile and upload projects to bintray and clean
+buildProjects.sh: Will compile, upload projects to bintray and clean
 
 removeProjects.sh: Will Remove each of the Projects list in this file
 
