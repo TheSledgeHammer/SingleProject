@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 cd Projects
-./GroovyForge/scripts/gitFetch.sh
-./GroovyMC/scripts/gitFetch.sh
-./RetroBees/scripts/gitFetch.sh
+./GroovyForge/Scripts/gitFetch.sh
+./GroovyMC/Scripts/gitFetch.sh
+./RetroBees/Scripts/gitFetch.sh
