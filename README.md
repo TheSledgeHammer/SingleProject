@@ -1,6 +1,6 @@
 # SingleProject
 This project is the main root for setting up a single project.
-It contains to variations to creating a single project.
+It contains two variations to creating a single project.
 
 # Setup Configurations
 ## Setup Config 1:
