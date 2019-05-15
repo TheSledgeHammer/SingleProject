@@ -1,0 +1,121 @@
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+//GITHOST: Remote hosting location e.g. GitHub.com, GitLab.com, BitBucket.org etc
+//COMPANY: Company name or User
+//REPOSITORY_NAME: Git Repository name
+
+def group = "com.thesledgehammer" + "." + project.archivesBaseName
+def semVersion = version_major + '.' + version_minor + '.' + version_patch
+def artifactID = project.archivesBaseName + '_' + project.mcversion
+
+jar {
+  classifier = 'universal'
+  manifest {
+		attributes 'FMLAT': project.archivesBaseName + '_at.cfg'
+  }
+}
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+  onlyIf{
+    keyStore = project.keyStore // This needs to be a path to the keystore file
+    alias = project.keyStoreAlias
+    storePass = project.keyStorePass
+    keyPass = project.keyStoreKeyPass
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+  }
+}
+build.dependsOn signJar
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      groupId = group
+      version = semVersion
+      artifactId = artifactID
+
+      from components.java
+
+      artifact sourceJar {
+        classifier "sources"
+      }
+      pom {
+        scm {
+          connection = 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+          developerConnection = 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+        }
+        licenses {
+          license {
+            name = LICENSE_NAME
+            url = LICENSE_URL
+            distribution = 'repo'
+          }
+        }
+        developers {
+          developer {
+            id = 'TheSledgehammer'
+            name = 'TheSledgehammer'
+          }
+        }
+      }
+    }
+  }
+  repositories {
+    maven {
+      url "Your Maven Repository you location"
+    }
+  }
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      if (project.hasProperty("local_maven") || project.hasProperty("maven_pass")) {
+        if (project.hasProperty("maven_pass")) {
+          println "Uploading to remote maven."
+          repository(url: "https://Your/Remote_Maven/Repository/Location") {
+            authentication(userName: project.getProperty("maven_user"), password: project.getProperty("maven_pass"))
+          }
+        } else {
+          println "Uploading to local maven."
+          repository(url: "file://Your/Local_Maven/Repository/Location")
+        }
+        pom {
+          groupId = group
+          version = semVersion
+          artifactId = artifactID
+          project {
+            name = project.archivesBaseName
+            packaging = 'jar'
+            description = DESCRIPTION
+            scm {
+              connection = 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+              developerConnection = 'scm:git:git@' + GITHOST + ':' + COMPANY + '/' + REPOSITORY_NAME + '.git'
+            }
+            issueManagement {
+              system = 'https://' + GITHOST + '/' + COMPANY + '/' + REPOSITORY_NAME + '/issues'
+            }
+            distributionManagement {
+              downloadUrl = project.getProperty("local_maven")
+              downloadUrl = project.getProperty("remote_maven")
+            }
+            licenses {
+              license {
+                name = LICENSE_NAME
+                url = LICENSE_URL
+                distribution = 'repo'
+              }
+            }
+            developers {
+              developer {
+                id = 'TheSledgehammer'
+                name = 'TheSledgehammer'
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
